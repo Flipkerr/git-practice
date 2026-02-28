@@ -1,26 +1,292 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>My First Website</title>
+    <title>Philip Kerr</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg: #0f1117;
+        --surface: #1a1d27;
+        --border: #2a2d3a;
+        --accent: #6c63ff;
+        --accent-light: #8b83ff;
+        --text: #e8eaf0;
+        --muted: #8b8fa8;
+      }
+
       body {
-        background-color: #1a1a2e;
-        color: white;
-        font-family: Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        line-height: 1.6;
+      }
+
+      /* NAV */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background: rgba(15, 17, 23, 0.85);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border);
+      }
+      nav .logo { font-weight: 700; font-size: 1.1rem; color: var(--accent-light); }
+      nav ul { list-style: none; display: flex; gap: 2rem; }
+      nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+      nav a:hover { color: var(--text); }
+
+      /* HERO */
+      .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
-        padding: 50px;
+        padding: 6rem 2rem 4rem;
       }
-      h1 {
-        color: #e94560;
+      .avatar {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #ff6b9d);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 0 40px rgba(108, 99, 255, 0.3);
       }
-      p {
-        font-size: 18px;
+      .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; margin-bottom: 0.5rem; }
+      .hero .subtitle {
+        font-size: 1.1rem;
+        color: var(--muted);
+        margin-bottom: 1.5rem;
+        max-width: 480px;
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        background: rgba(108, 99, 255, 0.15);
+        color: var(--accent-light);
+        border: 1px solid rgba(108, 99, 255, 0.3);
+        margin: 0.2rem;
+      }
+      .cta-row { display: flex; gap: 1rem; margin-top: 2rem; }
+      .btn {
+        padding: 0.65rem 1.4rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+      .btn-primary { background: var(--accent); color: #fff; border: none; }
+      .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
+      .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+      .btn-outline:hover { border-color: var(--accent-light); color: var(--accent-light); }
+
+      /* SECTIONS */
+      section { padding: 4rem 2rem; max-width: 860px; margin: 0 auto; }
+      .section-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent-light);
+        margin-bottom: 0.5rem;
+      }
+      h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 1.5rem; }
+      .divider { border: none; border-top: 1px solid var(--border); margin: 0 auto; }
+
+      /* ABOUT */
+      .about-text { color: var(--muted); font-size: 1.05rem; max-width: 620px; }
+      .about-text strong { color: var(--text); }
+
+      /* SKILLS */
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+      }
+      .skill-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.2rem 1.4rem;
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .skill-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+      .skill-card .icon { font-size: 1.6rem; margin-bottom: 0.5rem; }
+      .skill-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+      .skill-card p { font-size: 0.82rem; color: var(--muted); }
+
+      /* PROJECTS */
+      .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+      .project-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.4rem;
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .project-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+      .project-card .tag {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--accent-light);
+        margin-bottom: 0.5rem;
+      }
+      .project-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+      .project-card p { font-size: 0.85rem; color: var(--muted); }
+
+      /* CONTACT */
+      .contact-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+      .contact-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1.2rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+      .contact-link:hover { border-color: var(--accent); color: var(--accent-light); }
+
+      /* FOOTER */
+      footer {
+        text-align: center;
+        padding: 2rem;
+        color: var(--muted);
+        font-size: 0.82rem;
+        border-top: 1px solid var(--border);
       }
     </style>
   </head>
   <body>
-    <h1>Hey, I'm Philip 👋</h1>
-    <p>This is my first website built with HTML</p>
-    <p>And tracked with Git!</p>
+
+    <nav>
+      <span class="logo">PK</span>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero">
+      <div class="avatar">👋</div>
+      <h1>Hey, I'm Philip</h1>
+      <p class="subtitle">Building things with code and tracking every step with Git.</p>
+      <div>
+        <span class="badge">Open to opportunities</span>
+        <span class="badge">Based in the US</span>
+      </div>
+      <div class="cta-row">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <section id="about">
+      <p class="section-label">About</p>
+      <h2>Who I Am</h2>
+      <p class="about-text">
+        I'm a developer who loves turning ideas into working software. I started with a simple
+        HTML page tracked in Git — and I've been building from there ever since.
+        I care about <strong>clean code</strong>, <strong>good tooling</strong>, and shipping
+        things that actually work.
+      </p>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="skills">
+      <p class="section-label">Skills</p>
+      <h2>What I Work With</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="icon">🌐</div>
+          <h3>HTML &amp; CSS</h3>
+          <p>Semantic markup, responsive layouts, and clean styling from scratch.</p>
+        </div>
+        <div class="skill-card">
+          <div class="icon">⚙️</div>
+          <h3>Git &amp; GitHub</h3>
+          <p>Branching, merging, rebasing — version control as a first-class skill.</p>
+        </div>
+        <div class="skill-card">
+          <div class="icon">🖥️</div>
+          <h3>JavaScript</h3>
+          <p>Interactive UIs, DOM manipulation, and modern ES6+ patterns.</p>
+        </div>
+        <div class="skill-card">
+          <div class="icon">🛠️</div>
+          <h3>Developer Tools</h3>
+          <p>Browser devtools, CLI fluency, and a solid local dev workflow.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="projects">
+      <p class="section-label">Projects</p>
+      <h2>Things I've Built</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <p class="tag">HTML / CSS / Git</p>
+          <h3>This Website</h3>
+          <p>A personal site built from scratch and version-controlled with Git — commit by commit.</p>
+        </div>
+        <div class="project-card">
+          <p class="tag">Coming Soon</p>
+          <h3>Next Project</h3>
+          <p>Something interesting is in the works. Check back soon or follow along on GitHub.</p>
+        </div>
+        <div class="project-card">
+          <p class="tag">Coming Soon</p>
+          <h3>Another One</h3>
+          <p>Ideas are brewing. Every great project starts with a single commit.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="contact">
+      <p class="section-label">Contact</p>
+      <h2>Get in Touch</h2>
+      <div class="contact-links">
+        <a href="mailto:philip@example.com" class="contact-link">✉️ Email</a>
+        <a href="https://github.com" class="contact-link">💻 GitHub</a>
+        <a href="https://linkedin.com" class="contact-link">🔗 LinkedIn</a>
+      </div>
+    </section>
+
+    <footer>
+      Built with HTML &amp; CSS · Tracked with Git · &copy; 2026 Philip Kerr
+    </footer>
+
   </body>
 </html>
